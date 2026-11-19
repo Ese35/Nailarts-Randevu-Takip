@@ -1,11 +1,11 @@
 {
-    "name": "CEREN BEAUTYSTUDİO",
-    "short_name": "CEREN BEAUTYSTUDİO",
+    "name": "CEREN Nail & Beauty Studio",
+    "short_name": "CEREN Nail & Beauty Studio",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "CEREN BEAUTYSTUDİO randevu takip uygulaması.",
+    "description": "CEREN Nail & Beauty Studio randevu takip uygulaması.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

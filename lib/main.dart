@@ -60,7 +60,7 @@ class NailartsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'CEREN BEAUTYSTUDİO',
+      title: 'CEREN Nail & Beauty Studio',
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFE91E63)),
@@ -227,7 +227,7 @@ class _MainShellState extends State<MainShell> {
                                           fontWeight: FontWeight.w800,
                                           letterSpacing: 1.2)),
                                   SizedBox(height: 2),
-                                  Text('BEAUTYSTUDİO',
+                                  Text('Nail & Beauty Studio',
                                       style: TextStyle(
                                           color: Color(0xFF817680),
                                           fontSize: 11,
@@ -292,7 +292,7 @@ class _MainShellState extends State<MainShell> {
             children: [
               _BrandMark(size: 36),
               SizedBox(width: 10),
-              Text('CEREN BEAUTYSTUDİO'),
+              Text('CEREN Nail & Beauty Studio'),
             ],
           ),
           backgroundColor: Colors.white,
@@ -790,7 +790,7 @@ class _WhatsAppPageState extends State<WhatsAppPage> {
 
   final _message = TextEditingController(
     text:
-        'Merhaba {{MusteriAdi}}! CEREN BEAUTYSTUDİO randevunuzu hatırlatmak istiyoruz.',
+        'Merhaba {{MusteriAdi}}! CEREN Nail & Beauty Studio randevunuzu hatırlatmak istiyoruz.',
   );
   bool _sending = false;
 
@@ -976,6 +976,93 @@ class _WhatsAppPageState extends State<WhatsAppPage> {
   }
 }
 
+class TwentyFourHourTimePickerDialog extends StatefulWidget {
+  const TwentyFourHourTimePickerDialog({
+    super.key,
+    required this.initialTime,
+  });
+
+  final TimeOfDay initialTime;
+
+  @override
+  State<TwentyFourHourTimePickerDialog> createState() =>
+      _TwentyFourHourTimePickerDialogState();
+}
+
+class _TwentyFourHourTimePickerDialogState
+    extends State<TwentyFourHourTimePickerDialog> {
+  late int selectedHour = widget.initialTime.hour;
+  late int selectedMinute = widget.initialTime.minute;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Randevu saati'),
+      content: Row(
+        children: [
+          Expanded(
+            child: DropdownButtonFormField<int>(
+              initialValue: selectedHour,
+              menuMaxHeight: 320,
+              decoration: const InputDecoration(
+                labelText: 'Saat',
+                border: OutlineInputBorder(),
+              ),
+              items: [
+                for (var hour = 0; hour < 24; hour++)
+                  DropdownMenuItem(
+                    value: hour,
+                    child: Text(hour.toString().padLeft(2, '0')),
+                  ),
+              ],
+              onChanged: (value) {
+                if (value != null) setState(() => selectedHour = value);
+              },
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: Text(':', style: TextStyle(fontSize: 24)),
+          ),
+          Expanded(
+            child: DropdownButtonFormField<int>(
+              initialValue: selectedMinute,
+              menuMaxHeight: 320,
+              decoration: const InputDecoration(
+                labelText: 'Dakika',
+                border: OutlineInputBorder(),
+              ),
+              items: [
+                for (var minute = 0; minute < 60; minute++)
+                  DropdownMenuItem(
+                    value: minute,
+                    child: Text(minute.toString().padLeft(2, '0')),
+                  ),
+              ],
+              onChanged: (value) {
+                if (value != null) setState(() => selectedMinute = value);
+              },
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('İptal'),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(
+            context,
+            TimeOfDay(hour: selectedHour, minute: selectedMinute),
+          ),
+          child: const Text('Seç'),
+        ),
+      ],
+    );
+  }
+}
+
 class CreateAppointmentPage extends StatefulWidget {
   const CreateAppointmentPage({
     super.key,
@@ -1017,7 +1104,10 @@ class _CreateAppointmentPageState extends State<CreateAppointmentPage> {
   }
 
   Future<void> _pickTime() async {
-    final value = await showTimePicker(context: context, initialTime: time);
+    final value = await showDialog<TimeOfDay>(
+      context: context,
+      builder: (_) => TwentyFourHourTimePickerDialog(initialTime: time),
+    );
     if (value != null) setState(() => time = value);
   }
 
